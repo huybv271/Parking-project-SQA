@@ -1,0 +1,211 @@
+{
+  "name": "parking_selenium_test_generation_config",
+  "purpose": "Configuration file for Copilot/Codex to set up Selenium automation testing from existing system/tool test cases.",
+  "source": "Pasted text test case table converted to JSON",
+  "base_url_default": "http://localhost:3000",
+  "framework": {
+    "language": "Python",
+    "test_runner": "pytest",
+    "browser_automation": "Selenium",
+    "driver_management": "webdriver-manager",
+    "reporting": "pytest-html",
+    "excel_support": "openpyxl",
+    "design_pattern": "Page Object Model"
+  },
+  "rules": [
+    "Do not modify application source code.",
+    "Only create or modify files inside selenium-tests/.",
+    "Generate scripts only for browser-testable functional cases.",
+    "Do not generate tests for UI-only visual checks, manual-only checks, API-only Postman cases, or N/A cases.",
+    "Do not write actual results/status into the Excel file yet.",
+    "Prefer locators in this order: id, name, data-testid, stable CSS selector, XPath only if necessary.",
+    "If a locator cannot be confirmed from source code, add a TODO comment instead of guessing.",
+    "Each test function must include the original TC_ID in the function name or docstring.",
+    "Capture screenshots on failure.",
+    "For camera/OCR cases, inspect whether mock camera/image upload/test mode exists. If not, skip with clear pytest.mark.skip reason."
+  ],
+  "target_structure": [
+    "selenium-tests/test_cases/selenium_test_generation_config.json",
+    "selenium-tests/tests/test_checkin.py",
+    "selenium-tests/tests/test_checkout.py",
+    "selenium-tests/tests/test_auth.py",
+    "selenium-tests/pages/base_page.py",
+    "selenium-tests/pages/login_page.py",
+    "selenium-tests/pages/checkin_page.py",
+    "selenium-tests/pages/checkout_page.py",
+    "selenium-tests/utils/config.py",
+    "selenium-tests/utils/driver_factory.py",
+    "selenium-tests/utils/screenshot_helper.py",
+    "selenium-tests/screenshots/",
+    "selenium-tests/reports/",
+    "selenium-tests/pytest.ini",
+    "selenium-tests/requirements.txt",
+    "selenium-tests/README.md"
+  ],
+  "dependencies": [
+    "selenium",
+    "pytest",
+    "webdriver-manager",
+    "openpyxl",
+    "pytest-html"
+  ],
+  "environment_variables": {
+    "BASE_URL": "http://localhost:3000",
+    "STAFF_USERNAME": "",
+    "STAFF_PASSWORD": "",
+    "ADMIN_USERNAME": "",
+    "ADMIN_PASSWORD": "",
+    "HEADLESS": "false"
+  },
+  "run_commands": [
+    "cd selenium-tests",
+    "python -m venv venv",
+    "venv\\\\Scripts\\\\activate",
+    "pip install -r requirements.txt",
+    "pytest",
+    "pytest --html=reports/selenium_report.html --self-contained-html"
+  ],
+  "test_cases": [
+    {
+      "tc_id": "CI_FUN_01",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR - requires camera stream with visible license plate. Cannot be reliably automated via Selenium without mock/test mode."
+    },
+    {
+      "tc_id": "CI_FUN_02",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR - requires camera stream + pre-existing parking session. Difficult to automate simultaneous conditions."
+    },
+    {
+      "tc_id": "CI_FUN_03",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR - requires partial plate visibility. Difficult to simulate via Selenium."
+    },
+    {
+      "tc_id": "CI_FUN_04",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR - requires empty camera frame. Cannot control camera input."
+    },
+    {
+      "tc_id": "CI_FUN_05",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR - requires specific vehicle (car) in camera frame."
+    },
+    {
+      "tc_id": "CI_FUN_06",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR - requires government vehicle with blue plate."
+    },
+    {
+      "tc_id": "CI_FUN_07",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR - requires vehicle with red license plate."
+    },
+    {
+      "tc_id": "CI_FUN_08",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR + state - requires full lot + camera. Complex pre-condition setup needed."
+    },
+    {
+      "tc_id": "CI_FUN_09",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR - requires 3 different vehicles sequentially. Difficult to automate camera input."
+    },
+    {
+      "tc_id": "CO_FUN_01",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR + state - requires camera stream + existing parking session."
+    },
+    {
+      "tc_id": "CO_FUN_02",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR + state - requires camera + verification of no session."
+    },
+    {
+      "tc_id": "CO_FUN_03",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR - requires partial plate visibility."
+    },
+    {
+      "tc_id": "CO_FUN_04",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR - requires empty camera frame."
+    },
+    {
+      "tc_id": "CO_FUN_05",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR + state - requires car in camera + existing session."
+    },
+    {
+      "tc_id": "CO_FUN_06",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR + state - requires blue plate government vehicle + session."
+    },
+    {
+      "tc_id": "CO_FUN_07",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR + state - requires red plate + session."
+    },
+    {
+      "tc_id": "CO_FUN_08",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR + state - requires preventing duplicate checkout with camera."
+    },
+    {
+      "tc_id": "CO_FUN_09",
+      "status": "SKIPPED",
+      "automation_reason": "Camera/OCR + state - requires 3 vehicles checkout sequentially with sessions."
+    }
+  ],
+  "automated_test_cases": [
+    {
+      "tc_id": "AUTH_STAFF_01",
+      "feature": "Authentication",
+      "objective": "Staff login with valid credentials",
+      "status": "AUTOMATED",
+      "file": "tests/test_auth.py"
+    },
+    {
+      "tc_id": "AUTH_STAFF_02",
+      "feature": "Authentication",
+      "objective": "Staff login with invalid password",
+      "status": "AUTOMATED",
+      "file": "tests/test_auth.py"
+    },
+    {
+      "tc_id": "AUTH_STAFF_03",
+      "feature": "Authentication",
+      "objective": "Staff login with empty fields",
+      "status": "AUTOMATED",
+      "file": "tests/test_auth.py"
+    },
+    {
+      "tc_id": "AUTH_CUSTOMER_01",
+      "feature": "Authentication",
+      "objective": "Customer login page navigation",
+      "status": "AUTOMATED",
+      "file": "tests/test_auth.py"
+    },
+    {
+      "tc_id": "AUTH_CUSTOMER_02",
+      "feature": "Authentication",
+      "objective": "Customer login with valid credentials",
+      "status": "AUTOMATED",
+      "file": "tests/test_auth.py"
+    },
+    {
+      "tc_id": "AUTH_UI_01",
+      "feature": "Authentication UI",
+      "objective": "Staff login page elements visible",
+      "status": "AUTOMATED",
+      "file": "tests/test_auth.py"
+    },
+    {
+      "tc_id": "AUTH_UI_02",
+      "feature": "Authentication UI",
+      "objective": "Customer login page elements visible",
+      "status": "AUTOMATED",
+      "file": "tests/test_auth.py"
+    }
+  ]
+}
