@@ -1,0 +1,96 @@
+{
+  "cases": [
+    {
+      "test_case_id": "PRM_FUN_01",
+      "feature": "Parking Rate Management",
+      "objective": "Check if data is not filled in.",
+      "action": "parking_rate_save",
+      "vehicle_type": "",
+      "ticket_type": "",
+      "unit_price": "",
+      "expected_result": "Display \"Thieu du lieu. Vui long nhap gia\""
+    },
+    {
+      "test_case_id": "PRM_FUN_02",
+      "feature": "Parking Rate Management",
+      "objective": "Check if the vehicle type and ticket type data have been entered correctly.",
+      "action": "parking_rate_save",
+      "vehicle_type": "CAR",
+      "ticket_type": "STANDARD",
+      "unit_price": "",
+      "expected_result": "Display \"Thieu du lieu. Vui long nhap gia\""
+    },
+    {
+      "test_case_id": "PRM_FUN_03",
+      "feature": "Parking Rate Management",
+      "objective": "Check if the unit price data have been entered correctly.",
+      "action": "parking_rate_save",
+      "vehicle_type": "",
+      "ticket_type": "",
+      "unit_price": "10000",
+      "expected_result": "Display \"That bai. Vui long nhap day du du lieu dau vao\""
+    },
+    {
+      "test_case_id": "PRM_FUN_04",
+      "feature": "Parking Rate Management",
+      "objective": "Check if all data have been entered correctly.",
+      "action": "parking_rate_save",
+      "vehicle_type": "CAR",
+      "ticket_type": "STANDARD",
+      "unit_price": "10000000",
+      "expected_result": "Redirect to the management screen"
+    },
+    {
+      "test_case_id": "ST_FUN_01",
+      "feature": "Staff List",
+      "objective": "Check when deleting a staff",
+      "action": "delete_staff",
+      "username": "staff10",
+      "name": "Nhan vien 10",
+      "status": "Active",
+      "expected_result": "The staff was deleted."
+    },
+    {
+      "test_case_id": "ST_FUN_02",
+      "feature": "Staff List",
+      "objective": "Check when viewing a staff",
+      "action": "view_staff",
+      "username": "staff9",
+      "name": "Nhan vien 9",
+      "status": "Active",
+      "expected_result": "Display staff information"
+    },
+    {
+      "test_case_id": "DT_FUN_01",
+      "feature": "Delete staff",
+      "objective": "Check when restoring a staff",
+      "action": "restore_staff",
+      "username": "staff10",
+      "name": "Nhan vien 10",
+      "type": "staff",
+      "expected_result": "The staff was restored"
+    },
+    {
+      "test_case_id": "CS_FUN_01",
+      "feature": "Create staff",
+      "objective": "Check if all data have been entered correctly.",
+      "action": "create_staff",
+      "name": "Nhan vien 1",
+      "date": "2026-04-02",
+      "username": "staff01",
+      "password": "123456",
+      "expected_result": "The staff was created"
+    },
+    {
+      "test_case_id": "CS_FUN_02",
+      "feature": "Create staff",
+      "objective": "Check if only one required field was entered.",
+      "action": "create_staff_validation",
+      "name": "Nhan vien 1",
+      "date": "",
+      "username": "",
+      "password": "",
+      "expected_result": "Display \"Vui long nhap day du thong tin\""
+    }
+  ]
+}

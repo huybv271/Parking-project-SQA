@@ -1,0 +1,84 @@
+﻿"row_id","test_case_id","feature","test_type","objective","raw_steps","test_data_text","position","spot_id","vehicle_type","slot_type","activity_status","action","slot_status","expected_result","notes"
+"DS_ROW_001","DS_FUN_01","Delete spot","FUNCTIONAL","Check delete car","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Vá»‹ trÃ­: 2
+- Loáº¡i xe: CAR
+- slotType: Offline
+- Hoáº¡t Ä‘á»™ng: active
+- Action: Delete
+- Slot: avail","2",,"CAR","Offline","active","Delete","avail","Delete success",""
+"DS_ROW_002","DS_FUN_02","Delete spot","FUNCTIONAL","Check delete car","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 71, slotType: Online","71",,"CAR","Online","active","Delete","avail","Delete Success","Same as DS_FUN_01 except position and slotType."
+"DS_ROW_003","DS_FUN_03","Delete spot","FUNCTIONAL","Check delete car","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 3, slotType: Offline, Hoáº¡t Ä‘á»™ng: No active","3",,"CAR","Offline","No active","Delete","avail","Delete success","Same as DS_FUN_01 except position, slotType, and activity status."
+"DS_ROW_004","DS_FUN_04","Delete spot","FUNCTIONAL","Check delete car","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 73, slotType: Online","73",,"CAR","Online","active","Delete","avail","Delete Success","Same as DS_FUN_01 except position and slotType."
+"DS_ROW_005","DS_FUN_05","Delete spot","FUNCTIONAL","Check delete car","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 4, slotType: Offline, Hoáº¡t Ä‘á»™ng: active, slot: checkin","4",,"CAR","Offline","active","Delete","checkin","Delete Fail","Delete should fail because slot is checkin."
+"DS_ROW_006","DS_FUN_06","Delete spot","FUNCTIONAL","Check delete car","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 74, slotType: Online","74",,"CAR","Online","active","Delete","avail","Delete Fail","Manual test uses a separate spot from DS_FUN_04."
+"DS_ROW_007","DS_FUN_07","Delete spot","FUNCTIONAL","Check delete car","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 5, slotType: Offline, Hoáº¡t Ä‘á»™ng: No active","5",,"CAR","Offline","No active","Delete","avail","Delete Fail",""
+"DS_ROW_008","DS_FUN_08","Delete spot","FUNCTIONAL","Check delete car","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 75, slotType: Online","75",,"CAR","Online","active","Delete","avail","Delete Fail",""
+"DS_ROW_009","DS_FUN_09","Delete spot","FUNCTIONAL","Check restore car","1. Sign in with admin account
+2. Choose Deleted Spots menu
+3. Select Restore button","- Vá»‹ trÃ­ 2
+- Loáº¡i xe: CAR
+- slotType: OFFLINE","2",,"CAR","OFFLINE",,"Restore",,"Restore Success","Renumbered to keep each automation row unique."
+"DS_ROW_010","DS_FUN_10","Delete spot","FUNCTIONAL","Check restore car","1. Sign in with admin account
+2. Choose Deleted Spots menu
+3. Select Restore button","- Same as above, except slotType: Online","71",,"CAR","Online",,"Restore",,"Restore Success","Restore the online CAR spot deleted by DS_FUN_02."
+"DS_ROW_011","DS_FUN_11","Delete spot","FUNCTIONAL","Check delete motorbike","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Vá»‹ trÃ­: 1
+- Loáº¡i xe: MOTORBIKE
+- Slot: Offline
+- Hoáº¡t Ä‘á»™ng: active
+- Action: Delete","1",,"MOTORBIKE","Offline","active","Delete","avail","Delete success",""
+"DS_ROW_012","DS_FUN_12","Delete spot","FUNCTIONAL","Check delete motorbike","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 71, slotType: Online","71",,"MOTORBIKE","Online","active","Delete","avail","Delete Success","Same as DS_FUN_08 motorbike base except position and slotType."
+"DS_ROW_013","DS_FUN_13","Delete spot","FUNCTIONAL","Check delete motorbike","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 2, slotType: Offline, Hoáº¡t Ä‘á»™ng: No active","2",,"MOTORBIKE","Offline","No active","Delete","avail","Delete Success",""
+"DS_ROW_014","DS_FUN_14","Delete spot","FUNCTIONAL","Check delete motorbike","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 72, slotType: Online","72",,"MOTORBIKE","Online","active","Delete","avail","Delete Success",""
+"DS_ROW_015","DS_FUN_15","Delete spot","FUNCTIONAL","Check delete motorbike","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 3, slotType: Offline, Hoáº¡t Ä‘á»™ng: active, slot: checkin","3",,"MOTORBIKE","Offline","active","Delete","checkin","Delete Fail","Delete should fail because slot is checkin."
+"DS_ROW_016","DS_FUN_16","Delete spot","FUNCTIONAL","Check delete motorbike","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 73, slotType: Online","73",,"MOTORBIKE","Online","active","Delete","avail","Delete Fail","Renumbered to keep each automation row unique."
+"DS_ROW_017","DS_FUN_17","Delete spot","FUNCTIONAL","Check delete motorbike","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 4, slotType: Offline, Hoáº¡t Ä‘á»™ng: No active","4",,"MOTORBIKE","Offline","No active","Delete","avail","Delete Fail","Renumbered to keep each automation row unique."
+"DS_ROW_018","DS_FUN_18","Delete spot","FUNCTIONAL","Check delete motorbike","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Same as above, except Vá»‹ trÃ­: 74, slotType: Online","74",,"MOTORBIKE","Online","active","Delete","avail","Delete Fail","Renumbered to keep each automation row unique."
+"DS_ROW_019","DS_FUN_19","Delete spot","FUNCTIONAL","Check restore motorbike","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Vá»‹ trÃ­ 1
+- Loáº¡i xe: MOTORBIKE
+- Slot: OFFLINE","1",,"MOTORBIKE","OFFLINE",,"Restore",,"Restore Success","raw_steps preserved exactly as provided, although action/test data indicate restore."
+"DS_ROW_020","DS_FUN_20","Delete spot","FUNCTIONAL","Check restore motorbike","1. Sign in with admin account
+2. Choose Spot Area menu
+3. Select delete button","- Vá»‹ trÃ­ 71
+- Loáº¡i xe: MOTORBIKE
+- Slot: ONLINE","71",,"MOTORBIKE","ONLINE",,"Restore",,"Restore Success","raw_steps preserved exactly as provided, although action/test data indicate restore."
+"DS_ROW_021","DS_FUN_21","Delete spot","FUNCTIONAL","Check canceling the confirmation dialog prevents deletion","1. Sign in as admin
+2. Click Delete
+3. Choose Cancel in the confirmation dialog","- Vá»‹ trÃ­ 1
+- Loáº¡i xe: Car
+- Slot: OFFLINE","1",,"Car","OFFLINE",,"Cancel Delete",,"No Delete","Expected result means the spot remains not deleted after canceling confirmation."
+"DS_ROW_022","DS_FUN_22","Delete spot","FUNCTIONAL","Check deleting a non-existent spot ID","1. Sign in with admin account
+2. Send delete request for a spot ID that does not exist","- Invalid spotId: 999999
+- Action: Delete",,"999999",,,,"Delete Nonexistent",,"Delete Fail","API-level negative case because a non-existent spot cannot be selected from the UI."
