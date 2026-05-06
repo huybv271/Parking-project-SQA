@@ -1,0 +1,261 @@
+{
+  "info": {
+    "name": "Parking Booking Spot API Tests",
+    "_postman_id": "d5f8f1d5-53c3-4d88-9b6c-booking-api",
+    "description": "API test collection for customer login, available spot search, reservation creation, VNPay payment creation, and reservation history. Use Newman to execute and generate HTML/JSON reports.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Customer Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{customer_username}}\",\n  \"password\": \"{{customer_password}}\"\n}"
+        },
+        "url": {
+          "raw": "{{api_base_url}}{{user_base}}/login",
+          "host": ["{{api_base_url}}{{user_base}}"],
+          "path": ["login"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('login returns 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('login returns token', function () { pm.expect(json.token).to.be.a('string').and.not.empty; });",
+              "pm.environment.set('customer_token', json.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reservation - Find Available Spots Success",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "{{customer_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"timeIn\": {{time_in}},\n  \"timeOut\": {{time_out}},\n  \"dateTimeIn\": \"{{date_in}}\",\n  \"dateTimeOut\": \"{{date_out}}\",\n  \"vehicleType\": \"{{vehicle_type}}\"\n}"
+        },
+        "url": {
+          "raw": "{{api_base_url}}{{user_base}}/parking-lot/available",
+          "host": ["{{api_base_url}}{{user_base}}"],
+          "path": ["parking-lot", "available"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('available spots returns 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('freeSpots is an array', function () { pm.expect(json.freeSpots).to.be.an('array'); });",
+              "if (json.freeSpots.length > 0) { pm.environment.set('spot_id', json.freeSpots[0].id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reservation - Find Available Spots Invalid Time Fails",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "{{customer_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"timeIn\": 22,\n  \"timeOut\": 47,\n  \"dateTimeIn\": \"{{date_in}}\",\n  \"dateTimeOut\": \"{{date_out}}\",\n  \"vehicleType\": \"{{vehicle_type}}\"\n}"
+        },
+        "url": {
+          "raw": "{{api_base_url}}{{user_base}}/parking-lot/available",
+          "host": ["{{api_base_url}}{{user_base}}"],
+          "path": ["parking-lot", "available"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('invalid time is rejected', function () { pm.expect(pm.response.code).to.be.oneOf([400, 422]); });",
+              "pm.test('error body is returned', function () { pm.expect(pm.response.text()).to.not.be.empty; });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reservation - Create Reservation Success",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "{{customer_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": {{spot_id}},\n  \"timeIn\": {{time_in}},\n  \"timeOut\": {{time_out}},\n  \"dateTimeIn\": \"{{date_in}}\",\n  \"dateTimeOut\": \"{{date_out}}\",\n  \"vehicleType\": \"{{vehicle_type}}\",\n  \"plate\": \"{{plate}}\"\n}"
+        },
+        "url": {
+          "raw": "{{api_base_url}}{{user_base}}/reservation",
+          "host": ["{{api_base_url}}{{user_base}}"],
+          "path": ["reservation"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('create reservation returns 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('reservation id is returned', function () { pm.expect(json.reservation.id).to.exist; });",
+              "pm.test('reservation plate matches input', function () { pm.expect(json.reservation.plate).to.eql(pm.environment.get('plate')); });",
+              "pm.environment.set('reservation_id', json.reservation.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reservation - Duplicate Plate Overlap Fails",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "{{customer_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": {{spot_id}},\n  \"timeIn\": {{time_in}},\n  \"timeOut\": {{time_out}},\n  \"dateTimeIn\": \"{{date_in}}\",\n  \"dateTimeOut\": \"{{date_out}}\",\n  \"vehicleType\": \"{{vehicle_type}}\",\n  \"plate\": \"{{plate}}\"\n}"
+        },
+        "url": {
+          "raw": "{{api_base_url}}{{user_base}}/reservation",
+          "host": ["{{api_base_url}}{{user_base}}"],
+          "path": ["reservation"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('duplicate overlapping reservation is rejected', function () { pm.expect(pm.response.code).to.be.oneOf([400, 409]); });",
+              "pm.test('error response is returned', function () { pm.expect(pm.response.text()).to.not.be.empty; });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment - Create VNPay Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "{{customer_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"reservationId\": {{reservation_id}}\n}"
+        },
+        "url": {
+          "raw": "{{api_base_url}}{{user_base}}/payment/vnpay/create",
+          "host": ["{{api_base_url}}{{user_base}}"],
+          "path": ["payment", "vnpay", "create"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('payment creation returns 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('VNPay URL is returned', function () { pm.expect(json.vnpayUrl).to.be.a('string').and.include('http'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "History - Get Reservation History",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "{{customer_token}}" }
+        ],
+        "url": {
+          "raw": "{{api_base_url}}{{user_base}}/reservations",
+          "host": ["{{api_base_url}}{{user_base}}"],
+          "path": ["reservations"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('history returns 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('history reservations is an array', function () { pm.expect(json.reservations).to.be.an('array'); });",
+              "pm.test('history contains created plate when reservation exists', function () {",
+              "  const plate = pm.environment.get('plate');",
+              "  pm.expect(json.reservations.some(r => r.plate === plate)).to.eql(true);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "History - Active Reservation Number",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "{{customer_token}}" }
+        ],
+        "url": {
+          "raw": "{{api_base_url}}{{user_base}}/reservations/active/numbers",
+          "host": ["{{api_base_url}}{{user_base}}"],
+          "path": ["reservations", "active", "numbers"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('active reservation count returns 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('numbers is numeric', function () { pm.expect(json.numbers).to.be.a('number'); });"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

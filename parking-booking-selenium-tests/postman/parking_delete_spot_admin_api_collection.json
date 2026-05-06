@@ -1,0 +1,177 @@
+{
+  "info": {
+    "name": "Parking Admin Delete Spot API Tests",
+    "_postman_id": "0af1a36e-ec1f-4e64-9ca4-delete-spot-api",
+    "description": "API checks for admin login, spot list, safe delete-spot negative case, deleted spots, and restore spot. Default variables use localhost:8081 and spot id 999999 so the collection can be run manually without deleting a real spot.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Admin Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{admin_username}}\",\n  \"password\": \"{{admin_password}}\"\n}"
+        },
+        "url": {
+          "raw": "{{api_base_url}}/staff/login",
+          "host": ["{{api_base_url}}"],
+          "path": ["staff", "login"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('admin login returns 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('admin login returns token', function () { pm.expect(json.token).to.be.a('string').and.not.empty; });",
+              "pm.test('logged in account has admin role', function () { pm.expect(json.role).to.eql('admin'); });",
+              "pm.environment.set('admin_token', json.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Get Spots By Area",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "{{admin_token}}" }],
+        "url": {
+          "raw": "{{api_base_url}}/admin/spots/area/{{admin_spot_area}}",
+          "host": ["{{api_base_url}}"],
+          "path": ["admin", "spots", "area", "{{admin_spot_area}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('get spots returns 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('spots is an array', function () { pm.expect(json.spots).to.be.an('array'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Delete Spot / Safe Non-existent ID",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "{{admin_token}}" }
+        ],
+        "url": {
+          "raw": "{{api_base_url}}/admin/deleteSpot/{{admin_spot_id}}",
+          "host": ["{{api_base_url}}"],
+          "path": ["admin", "deleteSpot", "{{admin_spot_id}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('delete spot returns expected status', function () { pm.expect(pm.response.code).to.be.oneOf([200, 404, 409]); });",
+              "const json = pm.response.text() ? pm.response.json() : {};",
+              "if (pm.response.code === 200) {",
+              "  pm.test('delete success message returned', function () { pm.expect(json.message).to.include('deleted'); });",
+              "}",
+              "if (pm.response.code === 404) {",
+              "  pm.test('non-existent spot is rejected', function () {",
+              "    const message = json.message || json.meseage || '';",
+              "    pm.expect(message).to.not.be.empty;",
+              "  });",
+              "  pm.test('response should use message key, not typo meseage', function () {",
+              "    pm.expect(json).to.have.property('message');",
+              "  });",
+              "}",
+              "if (pm.response.code === 409) {",
+              "  pm.test('delete conflict body returned', function () { pm.expect(pm.response.text()).to.not.be.empty; });",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Get Deleted Spots",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "{{admin_token}}" }],
+        "url": {
+          "raw": "{{api_base_url}}/admin/trash/deletedSpots",
+          "host": ["{{api_base_url}}"],
+          "path": ["admin", "trash", "deletedSpots"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('get deleted spots returns 200', function () { pm.response.to.have.status(200); });",
+              "const json = pm.response.json();",
+              "pm.test('deleted spots is an array', function () { pm.expect(json.spots).to.be.an('array'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Restore Spot",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "{{admin_token}}" }
+        ],
+        "url": {
+          "raw": "{{api_base_url}}/admin/restoreSpot/{{admin_spot_id}}",
+          "host": ["{{api_base_url}}"],
+          "path": ["admin", "restoreSpot", "{{admin_spot_id}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('restore spot returns expected status', function () { pm.expect(pm.response.code).to.be.oneOf([200, 404]); });",
+              "const json = pm.response.text() ? pm.response.json() : {};",
+              "if (pm.response.code === 200) {",
+              "  pm.test('restore response has message', function () { pm.expect(json.message).to.be.a('string').and.not.empty; });",
+              "}",
+              "if (pm.response.code === 404) {",
+              "  pm.test('non-existent restore is rejected', function () {",
+              "    const message = json.message || json.meseage || '';",
+              "    pm.expect(message).to.not.be.empty;",
+              "  });",
+              "}"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "api_base_url", "value": "http://localhost:8081", "type": "string" },
+    { "key": "admin_username", "value": "admin", "type": "string" },
+    { "key": "admin_password", "value": "123456", "type": "string" },
+    { "key": "admin_token", "value": "", "type": "string" },
+    { "key": "admin_spot_area", "value": "A", "type": "string" },
+    { "key": "admin_spot_id", "value": "999999", "type": "string" }
+  ]
+}
